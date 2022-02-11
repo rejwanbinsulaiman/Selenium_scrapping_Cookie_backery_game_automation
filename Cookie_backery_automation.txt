@@ -1,0 +1,28 @@
+
+from selenium import webdriver 
+import time
+from selenium.webdriver.common.keys import Keys # works as keyboard keys, like enter or arrow keys
+chromedriverpath = "L:/selenium chrome driver/chromedriver.exe"
+driver = webdriver.Chrome(executable_path=chromedriverpath)
+
+
+driver.get("http://orteil.dashnet.org/experiments/cookie/")
+# " https:// " this part is very important 
+
+driver.set_window_size(1500,1000)
+
+cookie = driver.find_element_by_id("cookie")
+
+timeout = time.time() + 5
+five_min = time.time() + 60*5
+while True:
+    cookie.click()
+    if time.time() > timeout :
+        items = driver.find_elements_by_css_selector("#store div")
+        av_items = [item for item in items if item.get_attribute("class") == ""]
+        av_items[len(av_items)-1].click() if len(av_items) > 0 else time.sleep(10)
+        timeout = time.time() + 5
+    if time.time() > five_min:
+        cookies_s = driver.find_element_by_id("cps").text
+        print(cookies_s)
+        break
